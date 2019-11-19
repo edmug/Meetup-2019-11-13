@@ -1,0 +1,8 @@
+C:\_TFS\PSDev\CDS\CDS\Spikes\DougM\Edmug\2019-11-13\Blazor\Blazor.Shared\bin\Debug\netstandard2.0\Blazor.Shared.deps.json
+C:\_TFS\PSDev\CDS\CDS\Spikes\DougM\Edmug\2019-11-13\Blazor\Blazor.Shared\bin\Debug\netstandard2.0\Blazor.Shared.dll
+C:\_TFS\PSDev\CDS\CDS\Spikes\DougM\Edmug\2019-11-13\Blazor\Blazor.Shared\bin\Debug\netstandard2.0\Blazor.Shared.pdb
+C:\_TFS\PSDev\CDS\CDS\Spikes\DougM\Edmug\2019-11-13\Blazor\Blazor.Shared\obj\Debug\netstandard2.0\Blazor.Shared.AssemblyInfoInputs.cache
+C:\_TFS\PSDev\CDS\CDS\Spikes\DougM\Edmug\2019-11-13\Blazor\Blazor.Shared\obj\Debug\netstandard2.0\Blazor.Shared.AssemblyInfo.cs
+C:\_TFS\PSDev\CDS\CDS\Spikes\DougM\Edmug\2019-11-13\Blazor\Blazor.Shared\obj\Debug\netstandard2.0\Blazor.Shared.dll
+C:\_TFS\PSDev\CDS\CDS\Spikes\DougM\Edmug\2019-11-13\Blazor\Blazor.Shared\obj\Debug\netstandard2.0\Blazor.Shared.pdb
+C:\_TFS\PSDev\CDS\CDS\Spikes\DougM\Edmug\2019-11-13\Blazor\Blazor.Shared\obj\Debug\netstandard2.0\Blazor.Shared.csprojAssemblyReference.cache

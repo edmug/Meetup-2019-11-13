@@ -1,0 +1,111 @@
+﻿@page "/fetchdata"
+
+@using System.Threading
+@using Blazor.Server.Data
+@using Blazor.Shared
+@using Microsoft.Extensions.Caching.Memory
+@inject IMemoryCache Cache;
+@implements IDisposable;
+
+<h1>Event Log</h1>
+
+<p>This component demonstrates fetching data from a service.</p>
+
+<p>
+    Cache Size: <input type="number" min="1" max="100" @bind="CacheSize" /><br />
+    Cache Delay: <input type="number" min="1" max="60" @bind="CacheDelay" /><br />
+    Auto Update? <input type="checkbox" @bind="AutoUpdate" /><br />
+</p>
+
+<button class="btn btn-primary" @onclick="RefreshLogs">Refresh</button>
+
+@if (_eventLogs == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Type</th>
+                <th>Time</th>
+                <th>ProcessId</th>
+                <th>Message</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var log in _eventLogs)
+            {
+                <tr>
+                    <td>@log.Id</td>
+                    <td>@log.LogType</td>
+                    <td>@log.LoggedAt.ToString("O")</td>
+                    <td>@log.ProcessId</td>
+                    <td>@log.Message</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    EventLog[] _eventLogs;
+    private bool AutoUpdate { get; set; } = true;
+    private Timer _timer;
+    private int _cacheDelay;
+    private int _cacheSize;
+
+    private int CacheSize {
+        get => _cacheSize;
+        set {
+            _cacheSize = value;
+            Cache.Set(EventLogWorkerConstants.EventLogCacheSize, _cacheSize);
+        }
+    }
+
+    private int CacheDelay {
+        get => _cacheDelay;
+        set {
+            _cacheDelay = value;
+            Cache.Set(EventLogWorkerConstants.EventLogCacheDelay, _cacheDelay);
+            _timer?.Change(TimeSpan.FromSeconds(0), TimeSpan.FromSeconds(_cacheDelay));
+        }
+    }
+
+    private void RefreshLogs()
+    {
+        Cache.TryGetValue(EventLogWorkerConstants.EventLogCache, out _eventLogs);
+    }
+
+    private void StartTimer()
+    {
+        _timer = new Timer(new TimerCallback(_ =>
+         {
+             if (!AutoUpdate) return;
+
+             Cache.TryGetValue(EventLogWorkerConstants.EventLogCache, out _eventLogs);
+
+        //Inform blazor that the UI has changed
+        InvokeAsync(StateHasChanged);
+         }), null, TimeSpan.FromSeconds(0), TimeSpan.FromSeconds(_cacheDelay));
+    }
+
+    protected override void OnInitialized()
+    {
+        CacheSize = 10;
+        CacheDelay = 3;
+        StartTimer();
+    }
+
+    public void Dispose()
+    {
+        //Prevent the timer from executing;
+        _timer?.Change(Timeout.Infinite, Timeout.Infinite);
+
+        //Should probably configure a WaitHandle for disposing timer.
+        //_timer?.Dispose(MyWaitHandle);
+        _timer?.Dispose();
+    }
+}
